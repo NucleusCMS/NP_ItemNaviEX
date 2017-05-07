@@ -70,10 +70,10 @@ class NP_ItemNaviEX extends NucleusPlugin
 	function createNaviLink($unitArray)
 	{
 		if ($unitArray[1]) {
-			$tempLink = '<a href="' . htmlspecialchars($unitArray[1], ENT_QUOTES, _CHARSET) . '">'
-					  . htmlspecialchars($unitArray[0], ENT_QUOTES, _CHARSET) . '</a>';
+			$tempLink = '<a href="' . hsc($unitArray[1]) . '">'
+					  . hsc($unitArray[0]) . '</a>';
 		} else {
-			$tempLink = htmlspecialchars($unitArray[0], ENT_QUOTES, _CHARSET);
+			$tempLink = hsc($unitArray[0]);
 		}
 		return $tempLink;
 	}
@@ -273,7 +273,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 			if ($ares = sql_fetch_row($res)) {
 				$alink          = createItemLink($ares[1], $this->linkparams);
 				$subNaviUnit[1] = '<a href="'
-								. htmlspecialchars($alink, ENT_QUOTES, _CHARSET)
+								. hsc($alink)
 								. '" rel="prev"> &laquo; '
 								. shorten($ares[0], 14, '...')
 								. '</a>';
@@ -288,7 +288,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 			if ($ares = sql_fetch_row($res)) {
 				$alink          = createItemLink($ares[1], $this->linkparams);
 				$subNaviUnit[2] = '<a href="'
-								. htmlspecialchars($alink, ENT_QUOTES, _CHARSET)
+								. hsc($alink)
 								. '" rel="next"> '
 								. shorten($ares[0], 14, '...')
 								. ' &raquo;</a>';
@@ -345,17 +345,17 @@ class NP_ItemNaviEX extends NucleusPlugin
 				}
 				$prev_alink = createArchiveLink($blogid, $prev_date, $this->linkparams);
 				$subNaviUnit[1] = '<a href="'
-								. htmlspecialchars($prev_alink, ENT_QUOTES, _CHARSET)
+								. hsc($prev_alink)
 								. '" class="prevlink" rel="prev">'
 								. ' &laquo; '
-								. htmlspecialchars($prev_date, ENT_QUOTES, _CHARSET)
+								. hsc($prev_date)
 								. '</a>';
 //				$abuf .= '<a href="'.$prev_alink.'" class="prevlink" rel="prev">'.$prev_date.'</a>';
 //			} else {
 //				$today_link = createBlogidLink($b->getID(), $this->linkparams);
 //				$abuf .= '  ( <a href="'.$today_link.'">Today</a> )';
 			}
-			$abuf .= ' | <strong>' . htmlspecialchars($archive, ENT_QUOTES, _CHARSET) . '</strong> ';
+			$abuf .= ' | <strong>' . hsc($archive) . '</strong> ';
 //=============================
 			$query = 'SELECT ' . $date_str . ' as Date'
 				   . ' FROM ' . sql_table('item') . ' as i' . $mtable
@@ -375,9 +375,9 @@ class NP_ItemNaviEX extends NucleusPlugin
 				}
 				$next_alink     = createArchiveLink($blogid, $next_date, $this->linkparams);
 				$subNaviUnit[2] = '<a href="'
-								. htmlspecialchars($next_alink, ENT_QUOTES, _CHARSET)
+								. hsc($next_alink)
 								. '" class="nextlink" rel="next">'
-								. htmlspecialchars($next_date, ENT_QUOTES, _CHARSET)
+								. hsc($next_date)
 								. ' &raquo;</a>';
 //				$a2buf = ' | <a href="'.$next_alink.'" class="nextlink" rel="next">'.$next_date.'</a>';
 //			} else {
@@ -438,7 +438,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 				for ($i=0;$i<count($reqTags);$i++) {
 					$tag = trim($reqTags[$i]);
 					$taglist[$i] = '<a href="' . $tagPlugin->creatTagLink($tag, 0) . '">'
-								 . htmlspecialchars($tag, ENT_QUOTES, _CHARSET) . '</a>';
+								 . hsc($tag) . '</a>';
 				}
 //				echo ' <small style="font-family:Tahoma;">';
 //				echo ' (Tag for "'.$tagPlugin->_rawdecode(requestVar('tag')).'")';
@@ -498,7 +498,7 @@ class NP_ItemNaviEX extends NucleusPlugin
         if (intval($parent) != 0) {
         	$r = $this->getParent(intval($parent)) . " -> <a href=$subcat_id>$sname</a>";
         } else {
-        	$r = "<a href=$subcat_id>" . htmlspecialchars($sname) . "</a>";
+        	$r = "<a href=$subcat_id>" . hsc($sname) . "</a>";
     	}
         return $r;
     }
