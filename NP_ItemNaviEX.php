@@ -58,15 +58,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 		return $description;
 	}
 
-	function supportsFeature($what)
-	{
-		switch ($what) {
-			case 'SqlTablePrefix':
-				return 1;
-			default:
-				return 0;
-		}
-	}
+	function supportsFeature($what) {return in_array($what,array('SqlTablePrefix','SqlApi'));}
 
 	function scanEndKey($array)
 	{
@@ -94,7 +86,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 //			if (method_exists($mplugin,"getRequestName")) {
 				$query = 'SHOW FIELDS FROM ' . sql_table('plug_multiple_categories_sub');
 				$res   = sql_query($query);
-				while ($co = mysql_fetch_assoc($res)) {
+				while ($co = sql_fetch_assoc($res)) {
 					if ($co['Field'] == 'parentid') {
 						return TRUE;
 					}
@@ -278,7 +270,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 				   . " and i.itime < '" . $item['itime'] . "' " . $where
 				   . ' ORDER BY i.itime DESC'; 
 			$res   = sql_query($query);
-			if ($ares = mysql_fetch_row($res)) {
+			if ($ares = sql_fetch_row($res)) {
 				$alink          = createItemLink($ares[1], $this->linkparams);
 				$subNaviUnit[1] = '<a href="'
 								. htmlspecialchars($alink, ENT_QUOTES, _CHARSET)
@@ -293,7 +285,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 				   . " and i.itime > '" . $item['itime'] . "' " . $where
 				   . ' ORDER BY i.itime ASC'; 
 			$res   = sql_query($query);
-			if ($ares = mysql_fetch_row($res)) {
+			if ($ares = sql_fetch_row($res)) {
 				$alink          = createItemLink($ares[1], $this->linkparams);
 				$subNaviUnit[2] = '<a href="'
 								. htmlspecialchars($alink, ENT_QUOTES, _CHARSET)
@@ -343,7 +335,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 				   . ' GROUP BY Date'
 				   . ' ORDER BY i.itime DESC'; 
 			$res   = sql_query($query);
-			if ($ares = mysql_fetch_row($res)) {
+			if ($ares = sql_fetch_row($res)) {
 //				$prev_date = $ares[0];
 				sscanf($ares[0], '%d-%d-%d', $y, $m, $d);
 				if (empty($d)) {
@@ -373,7 +365,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 				   . ' GROUP BY Date'
 				   . ' ORDER BY i.itime ASC'; 
 			$res   = sql_query($query);
-			if ($ares = mysql_fetch_row($res)) {
+			if ($ares = sql_fetch_row($res)) {
 //				$next_date = $ares[0];
 				sscanf($ares[0],'%d-%d-%d', $y, $m, $d);
 				if (empty($d)) {
@@ -476,7 +468,7 @@ class NP_ItemNaviEX extends NucleusPlugin
     	$que       = 'SELECT scatid, parentid, sname, catid FROM %s WHERE scatid = %d';
     	$que       = sprintf($que, sql_table('plug_multiple_categories_sub'), $subcat_id);
     	$res       = sql_query($que);
-        list ($sid, $parent, $sname, $cat_id) = mysql_fetch_row($res);
+        list ($sid, $parent, $sname, $cat_id) = sql_fetch_row($res);
 		if (intval($parent) != 0) {
 			$this->r[]                  =  $this->getParenta(intval($parent), $blogid);
 			$this->linkparams[subcatid] = $sid;
@@ -502,7 +494,7 @@ class NP_ItemNaviEX extends NucleusPlugin
     	$que       = 'SELECT scatid, parentid, sname FROM %s WHERE scatid = %d';
     	$que       = sprintf($que, sql_table('plug_multiple_categories_sub'), $subcat_id);
     	$res       = sql_query($que);
-        list ($sid, $parent, $sname) = mysql_fetch_row($res);
+        list ($sid, $parent, $sname) = sql_fetch_row($res);
         if (intval($parent) != 0) {
         	$r = $this->getParent(intval($parent)) . " -> <a href=$subcat_id>$sname</a>";
         } else {
@@ -517,7 +509,7 @@ class NP_ItemNaviEX extends NucleusPlugin
     	$que       = 'SELECT scatid, parentid, sname FROM %s WHERE parentid = %d';
     	$que       = sprintf($que, sql_table('plug_multiple_categories_sub'), $subcat_id);
     	$res       = sql_query($que);
-		while ($so =  mysql_fetch_object($res)) {
+		while ($so =  sql_fetch_object($res)) {
 			$r .= $this->getChildren($so->scatid) . '/' . intval($so->scatid);
 		}
         return $r;
