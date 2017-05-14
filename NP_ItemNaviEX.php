@@ -47,7 +47,7 @@ class NP_ItemNaviEX extends NucleusPlugin
 
 	function getVersion()
 	{
-		return '0.993'; 
+		return '1.0'; 
 	}
 
 	function getDescription()
